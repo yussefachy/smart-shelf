@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Low Stock Items - Smart Shelf{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12">
+    <!-- Modal -->
+    <div id="quickActionModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-2xl bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Quick Actions</h3>
+                <div class="mt-2 px-7 py-3 space-y-3">
+                    <button onclick="window.location.href='/order-more/' + currentProductId" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        Add Manual Stock
+                    </button>
+                    <button onclick="window.location.href='/contact-supplier/' + currentProductId" class="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200">
+                        Request Stock from Supplier
+                    </button>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="closeModal" class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Low Stock Items</h2>
+        
+        <div class="space-y-4">
+            {% for product in low_stock_products %}
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold text-gray-900">{{ product.name }}</h3>
+                        <p class="text-sm text-gray-500">SKU: {{ product.sku or 'None' }}</p>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-600 mb-1">Stock Level</p>
+                            <div class="flex items-center space-x-2">
+                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-red-500 rounded-full" style="width: calc({{ (product.stock_level / product.min_threshold * 100)|round|int }}%)"></div>
+                                </div>
+                                <span class="text-sm text-gray-600">{{ product.stock_level }} / {{ product.min_threshold }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button 
+                        onclick="showQuickActionModal({{ product.id }});" 
+                        class="px-4 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        Quick Action
+                    </button>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-12">
+                <p class="text-gray-500">No items are currently low in stock.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+let currentProductId = null;
+
+function showQuickActionModal(productId) {
+    currentProductId = productId;
+    document.getElementById('quickActionModal').classList.remove('hidden');
+}
+
+document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('quickActionModal').classList.add('hidden');
+});
+
+// Close modal when clicking outside
+document.getElementById('quickActionModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+</script>
+{% endblock %} 

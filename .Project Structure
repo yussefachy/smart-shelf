@@ -1,0 +1,14 @@
+smartshelf/
+├── app.py
+├── models.py
+├── templates/
+│   ├── base.html
+│   ├── login.html
+│   ├── signup.html
+│   ├── setup.html
+│   ├── dashboard.html
+│   ├── inventory.html
+│   ├── add_product.html
+├── static/
+│   ├── style.css
+

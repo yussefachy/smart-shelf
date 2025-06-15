@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Supplier - Smart Shelf{% endblock %}
+
+{% block content %}
+<div class="py-6">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Header -->
+            <div class="px-8 py-6 bg-gradient-to-r from-blue-600 to-blue-700">
+                <h1 class="text-3xl font-semibold text-white flex items-center">
+                    <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    Contact Supplier
+                </h1>
+            </div>
+
+            <div class="p-8">
+                <!-- Product Info Card -->
+                <div class="bg-blue-50 rounded-xl p-6 mb-8 border border-blue-100">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-6 flex-1">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-semibold text-gray-900">{{ product.name }}</h3>
+                                <button onclick="toggleDetails()" class="text-blue-600 hover:text-blue-700 focus:outline-none">
+                                    <svg id="chevronIcon" class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="productDetails" class="mt-4 grid grid-cols-2 gap-6 text-sm hidden">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                    <p class="font-medium text-gray-900">Current Stock</p>
+                                    <p class="mt-2 text-lg text-blue-600">{{ product.quantity }} units</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                    <p class="font-medium text-gray-900">Minimum Threshold</p>
+                                    <p class="mt-2 text-lg text-blue-600">{{ product.min_threshold }} units</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                    <p class="font-medium text-gray-900">Supplier</p>
+                                    <p class="mt-2 text-lg text-blue-600">{{ product.supplier.email }}</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                                    <p class="font-medium text-gray-900">Unit Price</p>
+                                    <p class="mt-2 text-lg text-blue-600">{{ "%.2f"|format(product.price) }} PLN</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Form -->
+                <form action="{{ url_for('contact_supplier', product_id=product.id) }}" method="post">
+                    <div class="space-y-8">
+                        <!-- Quantity Input -->
+                        <div>
+                            <label for="quantity" class="block text-base font-medium text-gray-900 mb-3">Request Quantity</label>
+                            <div class="relative">
+                                <input type="number" 
+                                       id="quantity" 
+                                       name="quantity" 
+                                       min="1"
+                                       value="{{ product.min_threshold - product.quantity }}"
+                                       class="block w-full px-6 py-4 text-base rounded-xl border-2 border-gray-200 bg-white shadow-sm transition-all duration-200 ease-in-out focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+                                       required>
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500">Enter the number of units you want to request from the supplier.</p>
+                        </div>
+
+                        <!-- Quick Templates -->
+                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                            <h4 class="text-base font-medium text-gray-900 mb-4">Quick Message Templates</h4>
+                            <div class="flex flex-wrap gap-3">
+                                <button type="button" onclick="fillTemplate('stock')" 
+                                    class="inline-flex items-center px-4 py-2 border-2 border-blue-200 shadow-sm text-sm font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                    🔄 Restock Request
+                                </button>
+                                <button type="button" onclick="fillTemplate('quote')"
+                                    class="inline-flex items-center px-4 py-2 border-2 border-blue-200 shadow-sm text-sm font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                    💰 Price Quote
+                                </button>
+                                <button type="button" onclick="fillTemplate('urgent')"
+                                    class="inline-flex items-center px-4 py-2 border-2 border-blue-200 shadow-sm text-sm font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                    ⚡ Urgent Order
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-base font-medium text-gray-900 mb-3">Message to Supplier</label>
+                            <div class="relative">
+                                <textarea id="message" name="message" rows="8" 
+                                    class="block w-full px-6 py-4 text-base rounded-xl border-2 border-gray-200 bg-white shadow-sm transition-all duration-200 ease-in-out focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none resize-none"
+                                    placeholder="Enter your message here..."></textarea>
+                            </div>
+                            <p class="mt-3 text-sm text-gray-500">Include any specific requirements or questions about the product.</p>
+                        </div>
+
+                        <div class="flex justify-end space-x-4 pt-4">
+                            <a href="{{ url_for('inventory') }}" 
+                                class="inline-flex items-center px-6 py-3 border-2 border-gray-200 text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                Cancel
+                            </a>
+                            <button type="submit"
+                                class="inline-flex items-center px-6 py-3 border-2 border-transparent text-base font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm transition-all duration-200">
+                                Send Message
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleDetails() {
+    const details = document.getElementById('productDetails');
+    const chevron = document.getElementById('chevronIcon');
+    details.classList.toggle('hidden');
+    chevron.classList.toggle('rotate-180');
+}
+
+function fillTemplate(type) {
+    const productName = "{{ product.name }}";
+    const currentStock = "{{ product.quantity }}";
+    const quantity = document.getElementById('quantity').value;
+    let message = "";
+    
+    switch(type) {
+        case 'stock':
+            message = `Hello,\n\nI would like to request a restock of ${productName}.\n\nRequested quantity: ${quantity} units\nCurrent stock: ${currentStock} units\n\nPlease provide availability and delivery timeline.\n\nThank you.`;
+            break;
+        case 'quote':
+            message = `Hello,\n\nI would like to request a price quote for ${productName}.\n\nRequested quantity: ${quantity} units\n\nPlease provide:\n- Current unit price for this quantity\n- Available discounts\n- Delivery costs\n\nThank you.`;
+            break;
+        case 'urgent':
+            message = `Hello,\n\nThis is an URGENT order request for ${productName}.\n\nRequested quantity: ${quantity} units\nCurrent stock: ${currentStock} units\n\nWe need immediate replenishment. Please provide the earliest possible delivery date.\n\nThank you.`;
+            break;
+    }
+    
+    document.getElementById('message').value = message;
+}
+</script>
+{% endblock %} 

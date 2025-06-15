@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit' if supplier else 'Add' }} Supplier - Smart Shelf{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">
+            {% if supplier %}Edit Supplier{% else %}Add New Supplier{% endif %}
+        </h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-4 p-4 rounded {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                    Name *
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="name"
+                       name="name"
+                       type="text"
+                       value="{{ supplier.name if supplier else '' }}"
+                       required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                    Email *
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="email"
+                       name="email"
+                       type="email"
+                       value="{{ supplier.email if supplier else '' }}"
+                       required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
+                    Phone
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       id="phone"
+                       name="phone"
+                       type="tel"
+                       value="{{ supplier.phone if supplier else '' }}">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="address">
+                    Address
+                </label>
+                <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="address"
+                          name="address"
+                          rows="3">{{ supplier.address if supplier else '' }}</textarea>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">
+                    {% if supplier %}Save Changes{% else %}Add Supplier{% endif %}
+                </button>
+                <a href="{{ url_for('suppliers') }}"
+                   class="text-gray-600 hover:text-gray-800 font-semibold">
+                    Cancel
+                </a>
+            </div>
+        </form>
+
+        <p class="text-sm text-gray-500">* Required fields</p>
+    </div>
+</div>
+{% endblock %} 

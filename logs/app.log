@@ -1,0 +1,51 @@
+2025-04-29 14:40:01,016 INFO: Smart Shelf startup [in D:\AI PROGECT\Smart Shelf\app.py:32]
+2025-04-29 14:40:46,981 INFO: Smart Shelf startup [in D:\AI PROGECT\Smart Shelf\app.py:32]
+2025-04-29 14:50:22,245 INFO: Smart Shelf startup [in D:\AI PROGECT\Smart Shelf\app.py:32]
+2025-04-29 14:50:24,480 INFO: Smart Shelf startup [in D:\AI PROGECT\Smart Shelf\app.py:32]
+2025-06-14 01:37:20,806 INFO: Smart Shelf startup [in /Users/macbook/Desktop/Smart Shelf/app.py:32]
+2025-06-14 01:43:05,556 INFO: Smart Shelf startup [in /Users/macbook/Desktop/Smart Shelf/app.py:32]
+2025-06-14 01:44:52,032 ERROR: Exception on /order-history [GET] [in /Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/flask/app.py:1414]
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/flask/app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/flask/app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/flask/app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/flask/app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/macbook/Desktop/Smart Shelf/app.py", line 538, in order_history
+    return render_template('order_history.html', orders=orders)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/flask/templating.py", line 151, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/flask/templating.py", line 132, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/macbook/Desktop/Smart Shelf/templates/order_history.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/Users/macbook/Desktop/Smart Shelf/templates/base.html", line 189, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/macbook/Desktop/Smart Shelf/templates/order_history.html", line 137, in block 'content'
+    'X-CSRFToken': '{{ csrf_token() }}'
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'csrf_token' is undefined
+2025-06-14 01:45:14,780 INFO: Smart Shelf startup [in /Users/macbook/Desktop/Smart Shelf/app.py:32]
+2025-06-14 18:11:49,187 INFO: Smart Shelf startup [in /Users/macbook/Desktop/Smart Shelf/app.py:32]
+2025-06-15 19:11:40,065 INFO: Smart Shelf startup [in /Users/macbook/Desktop/Smart Shelf/app.py:32]
